@@ -1,5 +1,5 @@
 const {response, request} = require('express');
-
+const Usuario = require('../models/usuario');
 
 const usuariosGet = (req = request, res = response)=>{
 
@@ -13,14 +13,18 @@ const usuariosGet = (req = request, res = response)=>{
     });
 }
 
-const usuariosPost = (req = request, res = response)=>{
+const usuariosPost = async(req = request, res = response)=>{
 
-    const {Nombre,Edad}= req.body;
+    const body = req.body;
+
+    //Crear nueva instancia del modelo usuario y grabarlo en la DB
+
+    const usuario = new Usuario(body);
+
+    await usuario.save();
 
     res.status(201).json({
-        msg:"post API - controlador ",
-        Nombre,
-        Edad
+        usuario
     });
 }
 
